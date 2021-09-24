@@ -26,12 +26,14 @@ class Parser{
 
 	public:
 		Parser();
-		void runParser();
+		void runParser(bool inDebug);
+		void setArgumentCount(int argumentCount);
+		int getArgumentCount();
 		char *getUserInput();
 		char *getUserString();
 		char **parseInput(char *userString);
+		void printParams();
 		void freeMem();
-		~Parser();
 
 
 };
