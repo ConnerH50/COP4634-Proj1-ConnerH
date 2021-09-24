@@ -44,6 +44,18 @@ char *Parser::getUserString(){ // returns userString
 	return userString;
 }
 
+char *Parser::getInputRedirect(){
+	return inputRedirect;
+}
+
+char *Parser::getOutputRedirect(){
+	return outputRedirect;
+}
+
+char **Parser::getArgumentVector(){
+	return argumentVector;
+}
+
 char **Parser::parseInput(char *userString){
 	char **tokenArray;
 	char *token;
@@ -57,12 +69,40 @@ char **Parser::parseInput(char *userString){
 	token = strtok(userString, " ");
 
 	while(token != NULL){
+		cout << token << endl;
+		switch(token[0]){
+			case '<':
+				if(strcmp(token, "<") == 0){
+					cout << "Error, inputRedirect cannot be empty" << endl;
+					break;
+				}else if(strcmp(token, "<\n") == 0){
+					cout << "Error, inputRedirect cannot be empty" << endl;
+					break;
+				}
+				memmove(token, token + 1, strlen(token)); // may need to change this to a substring	
+				inputRedirect = token;
+				break;
+			case '>':
+				if(strcmp(token, ">") == 0){
+					cout << "Error, outputRedirect cannot be empty" << endl;
+					break;
 
+				}else if(strcmp(token, ">\n") == 0){
+					cout << "Error, outputRedirect cannot be empty" << endl;
+				}
+				memmove(token, token + 1, strlen(token));
+				outputRedirect = token;
+				break;
+			case '&':
+				background = 1;
+				break;
+				
+			default:
+				tokenArray[argNum++] = token;
+				break;
+		}
 
-
-
-		tokenArray[argNum++] = token;
-		token = strtok(NULL, " ");
+		token = strtok(NULL, " \n");
 	}
 	
 	setArgumentCount(argNum);
@@ -70,15 +110,20 @@ char **Parser::parseInput(char *userString){
 }
 
 void Parser::printParams(){
-	/*//cout << "InputRedirect :[" << inputRedirect << "]" << endl;
-	//cout << "OutputRedirect :[" << outputRedirect << "]" << endl;
-	//cout << "Argument Count: [" << argumentCount << "]" << endl;
-	//cout << "Background :[" << background << "]" << endl;
+	if(inputRedirect == NULL){
 
-	for(int i = 0; i < getArgumentCount(); i++){
-		cout << "ArgumentVector[" << i << "]: [" <<
-			argumentVector[i] << "]" << endl;
-	}*/
+	}else{
+		cout << "InputRedirect :[" << inputRedirect << "]" << endl;
+	}
+
+	if(outputRedirect == NULL){
+
+	}else{
+		cout << "OutputRedirect :[" << outputRedirect << "]" << endl;
+	}
+	
+	cout << "Argument Count: [" << argumentCount << "]" << endl;
+	cout << "Background :[" << background << "]" << endl;
 
 
 	for (int i = 0; i < argumentCount; i++){
@@ -91,6 +136,9 @@ void Parser::printParams(){
  * Frees the memory allocated in getUserInput and ParseInput
  */
 void Parser::freeMem(){
+	inputRedirect = NULL;
+	outputRedirect = NULL;
+
 	free(argumentVector);
 	free(userString);
 }

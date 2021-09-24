@@ -12,7 +12,7 @@
 
 using namespace std;
 
-#define MAXARGS 32
+#define MAXARGS 32 
 
 class Parser{
 
@@ -20,7 +20,6 @@ class Parser{
 		char *inputRedirect;
 		char *outputRedirect;
 		int background, argumentCount;
-		//char *argumentVector[MAXARGS];
 		char **argumentVector;
 		char *userString;
 
@@ -29,8 +28,11 @@ class Parser{
 		void runParser(bool inDebug);
 		void setArgumentCount(int argumentCount);
 		int getArgumentCount();
+		char *getInputRedirect();
+		char *getOutputRedirect();
 		char *getUserInput();
 		char *getUserString();
+		char **getArgumentVector();
 		char **parseInput(char *userString);
 		void printParams();
 		void freeMem();
