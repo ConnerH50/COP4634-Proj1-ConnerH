@@ -4,13 +4,16 @@
 int main(int argc, char**argv){
 
 	Parser parse;
+	string input;
 
 	do{
 		parse.runParser();
-	} while(strcmp(parse.getUserString(), "exit\n") != 0); // dont forget the newline character on exit
+		input = parse.getUserString();
+		parse.freeMem();
 
-	cout << strcmp(parse.getUserString(), "exit\n") << endl;
-	cout << parse.getUserString() << endl;
+	} while(input != "exit\n"); 
+
+	
 
 	return 0;
 }

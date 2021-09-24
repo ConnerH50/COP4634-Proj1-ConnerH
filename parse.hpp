@@ -20,8 +20,8 @@ class Parser{
 		char *inputRedirect;
 		char *outputRedirect;
 		int background, argumentCount;
-		char *argVector[MAXARGS];
-		char *tokens;
+		//char *argumentVector[MAXARGS];
+		char **argumentVector;
 		char *userString;
 
 	public:
@@ -29,6 +29,9 @@ class Parser{
 		void runParser();
 		char *getUserInput();
 		char *getUserString();
+		char **parseInput(char *userString);
+		void freeMem();
+		~Parser();
 
 
 };
