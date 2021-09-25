@@ -56,6 +56,10 @@ char **Parser::getArgumentVector(){
 	return argumentVector;
 }
 
+char *Parser::getVectorIndex(int index){
+	return argumentVector[index];
+}
+
 char **Parser::parseInput(char *userString){
 	char **tokenArray;
 	char *token;
@@ -66,7 +70,7 @@ char **Parser::parseInput(char *userString){
 
 	tokenArray = (char**)malloc(size * sizeof(char*));
 	
-	token = strtok(userString, " ");
+	token = strtok(userString, " \n");
 
 	while(token != NULL){
 		cout << token << endl;
@@ -102,9 +106,10 @@ char **Parser::parseInput(char *userString){
 				break;
 		}
 
-		token = strtok(NULL, " \n");
+		token = strtok(NULL, " \n"); //tokenizes on both whitespace and newline
 	}
 	
+	tokenArray[argNum] = NULL;	
 	setArgumentCount(argNum);
 	return tokenArray;
 }

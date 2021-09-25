@@ -9,6 +9,8 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
+#include <fstream>
+#include <sys/wait.h>
 
 using namespace std;
 
@@ -33,6 +35,7 @@ class Parser{
 		char *getUserInput();
 		char *getUserString();
 		char **getArgumentVector();
+		char *getVectorIndex(int index);
 		char **parseInput(char *userString);
 		void printParams();
 		void freeMem();
