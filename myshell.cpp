@@ -1,11 +1,7 @@
 #include "parse.hpp"
-#include "errno.h"
-
-int backgroundProcesses = 0;
 
 void runShell(Parser parse, char** argv){
 	int forkresult, returnStatus;
-	//pid_t cpid;
 	FILE *fp;
 	
 	forkresult = fork();
@@ -13,10 +9,7 @@ void runShell(Parser parse, char** argv){
 	if(forkresult != 0){ // parent runs this code, forkresult is childs pid
 		if(parse.getBackground() == 0){
 			waitpid(forkresult, &returnStatus, 0); // wait for child to finish
-			cout << "The child is done, with pid: " << forkresult << endl;
 		}else{
-			cout << "\nParent " << getpid() << " is about to return, thus making a background process, child pid is: " << forkresult << endl;
-			backgroundProcesses++;
 			return;
 		}
 
@@ -68,8 +61,8 @@ int main(int argc, char**argv){
 		if(input == "exit"){ // at exit immedietly free any allocated memory and wait
 			parse.freeMem();
 
-			while((pid = waitpid(-1, &resultStatus, 0)) != -1){
-				cout << "Waiting on background process to finish" << endl;
+			while((pid = waitpid(-1, &resultStatus, 0)) != -1){ // waitpid checks if theres any child left until there isnt any
+				;
 			}
 
 			//wait(NULL); // wait forany child processes to finish
