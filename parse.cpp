@@ -140,6 +140,7 @@ void Parser::printParams(){
 void Parser::freeMem(){
 	inputRedirect = NULL;
 	outputRedirect = NULL;
+	background = 0;
 
 	free(argumentVector);
 	free(userString);
