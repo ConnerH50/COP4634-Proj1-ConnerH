@@ -26,7 +26,8 @@ void runShell(Parser parse, char** argv){
 
 		if(parse.getInputRedirect() != NULL){ // < sym, read from file
 			
-			inFile = open(parse.getInputRedirect(), O_RDONLY);
+				//commented out code works
+			/*inFile = open(parse.getInputRedirect(), O_RDONLY);
 
 			if(inFile < 0){
 				cout << "Error, couldn't open file" << endl;
@@ -36,20 +37,25 @@ void runShell(Parser parse, char** argv){
 				cout << "Error dup2 failed" << endl;
 			}
 
-			close(inFile);
+			close(inFile);*/
+			
+			freopen(parse.getInputRedirect(), "r", stdin);
+
 		}
 
 		if(parse.getOutputRedirect() != NULL){ // > sym, write to file
 
-			//outFile = creat(parse.getOutputRedirect(), 664);
-			outFile = open(parse.getOutputRedirect(), O_WRONLY|O_CREAT, 0666);
+				//commented out code works
+			/*outFile = open(parse.getOutputRedirect(), O_WRONLY|O_CREAT, 0664);
 
 			if(outFile < 0){
 				cout << "Error, couldn't open file" << endl;
 			}
 
 			dup2(outFile, STDOUT_FILENO);
-			close(outFile);
+			close(outFile);*/
+
+			freopen(parse.getOutputRedirect(), "w+", stdout);
 		}
 
 		
