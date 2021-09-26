@@ -7,7 +7,9 @@
 #include <sstream>
 
 #include <unistd.h>
+#include <fcntl.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <fstream>
 #include <sys/wait.h>

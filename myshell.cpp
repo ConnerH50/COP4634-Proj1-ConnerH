@@ -1,8 +1,10 @@
 #include "parse.hpp"
+#include "errno.h"
 
 void runShell(Parser parse, char** argv){
-	int forkresult, returnstatus;
-	pid_t cpid;
+	int forkresult, returnstatus, inFile, outFile;
+	//pid_t cpid;
+	FILE *fp;
 	
 	forkresult = fork();
 
@@ -16,11 +18,32 @@ void runShell(Parser parse, char** argv){
 			return;
 		}
 
-	}else  if(forkresult == -1){ // error in fork process
+	}else if(forkresult == -1){ // error in fork process
 		
 		cout << "Error in fork process" << endl;
 
 	}else{ // child executes
+
+		if(parse.getInputRedirect() != NULL){ // < sym, read from file
+			
+			inFile = open(parse.getInputRedirect(), O_RDONLY);
+
+			if(dup2(inFile, STDIN_FILENO) == -1){
+				cout << "Error dup2 failed" << endl;
+			}
+
+			close(inFile);
+		}
+
+		if(parse.getOutputRedirect() != NULL){ // > sym, write to file
+			outFile = open(parse.getOutputRedirect(), O_WRONLY | O_CREAT);
+
+			if(dup2(outFile, STDOUT_FILENO) == -1){
+				cout << "Error, dup2 failed" << endl;
+			}
+
+			close(outFile);
+		}
 
 		
 		execvp(parse.getVectorIndex(0), parse.getArgumentVector());
