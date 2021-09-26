@@ -30,6 +30,7 @@ class Parser{
 		void runParser(bool inDebug);
 		void setArgumentCount(int argumentCount);
 		int getArgumentCount();
+		int getBackground();
 		char *getInputRedirect();
 		char *getOutputRedirect();
 		char *getUserInput();

@@ -12,7 +12,6 @@ Parser::Parser(){
 void Parser::runParser(bool inDebug){
 	userString = getUserInput();
 	argumentVector = parseInput(userString);
-	//cout << getArgumentCount() << endl;
 
 	if(inDebug == true){
 		printParams();
@@ -28,14 +27,15 @@ int Parser::getArgumentCount(){
 	return argumentCount;
 }
 
+int Parser::getBackground(){
+	return background;
+}
+
 char *Parser::getUserInput(){
 	cout << "$$$ ";
 	char *line;
 	size_t buffer = 0;
 	getline(&line, &buffer, stdin);
-	
-	cout << line << endl;
-
 
 	return line;
 }
@@ -65,15 +65,12 @@ char **Parser::parseInput(char *userString){
 	char *token;
 	int size = MAXARGS;
 	int argNum = 0;
-	cout << "Inside parseInput" << endl;
-	cout << userString << endl;
 
 	tokenArray = (char**)malloc(size * sizeof(char*));
 	
 	token = strtok(userString, " \n");
 
 	while(token != NULL){
-		cout << token << endl;
 		switch(token[0]){
 			case '<':
 				if(strcmp(token, "<") == 0){

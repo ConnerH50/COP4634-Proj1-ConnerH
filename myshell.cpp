@@ -1,21 +1,29 @@
 #include "parse.hpp"
 
 void runShell(Parser parse, char** argv){
-	int forkresult;
+	int forkresult, returnstatus;
 	pid_t cpid;
-	cout << "in runShell()" << endl;
 	
 	forkresult = fork();
 
-	if(forkresult != 0){ // parent runs this code
-		cpid = wait(NULL); // wait for child to finish
+	if(forkresult != 0){ // parent runs this code, forkresult is childs pid
+		if(parse.getBackground() == 0){
+			//wait(NULL); // wait for child to finish
+			waitpid(forkresult, &returnstatus, 0); // wait for child to finish
+			cout << "The child is done" << endl;
+		}else{
+			cout << "\nParent " << getpid() << " is about to return, thus making a background process" << endl;
+			return;
+		}
+
+	}else  if(forkresult == -1){ // error in fork process
+		
+		cout << "Error in fork process" << endl;
+
 	}else{ // child executes
 
-		//cout << strlen(parse.getVectorIndex(0)) << endl;
+		
 		execvp(parse.getVectorIndex(0), parse.getArgumentVector());
-
-		//char *cmd[] = {"cat", "myshell.cpp", NULL};
-		//execvp(cmd[0], cmd);
 	}
 }
 
@@ -30,26 +38,25 @@ int main(int argc, char**argv){
 		inDebug = true;
 	}
 
-	cout << "argv[0] " << argv[0] << endl;
-
 			
 
-	do { // while(input != "exit"){
+	while(input != "exit"){
 
 		parse.runParser(inDebug);
 		input = parse.getUserString();
 
+		if(input == "exit"){ 
+			//cout << "input is exit" << endl;
+			parse.freeMem();
+			wait(NULL); // wait for child processes to finish
+			//return 0;
+		}else{
 
-		//char *cmd[] = {"ls", "-l", NULL};
+			runShell(parse, argv);
+			parse.freeMem(); // free the memory allocated in runParser
+		}
 
-		//execvp("ls", parse.getArgumentVector());
-		//execvp("ls", cmd);
-
-		runShell(parse, argv);
-
-		parse.freeMem(); // free the memory allocated in runParser
-
-	}while(input != "exit"); 
+	} 
 
 	
 
